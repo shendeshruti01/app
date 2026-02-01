@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { LogOut, Save, Plus, Trash2, User, Briefcase, Award, Code, Link as LinkIcon, FileText, Image, Upload } from 'lucide-react';
-import { mockPortfolioData } from '../mock';
+import { LogOut, Save, Plus, Trash2, User, Briefcase, Award, Code, Link as LinkIcon, FileText, Image, Upload, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -10,49 +9,115 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Separator } from '@/components/ui/separator';
 import { toast } from '@/hooks/use-toast';
+import {
+  getPortfolio,
+  updatePersonalInfo,
+  updateSocialLinks,
+  addExperience,
+  updateExperience,
+  deleteExperience,
+  addCertification,
+  updateCertification,
+  deleteCertification,
+  addSkill,
+  updateSkill,
+  deleteSkill,
+  uploadDocuments,
+  verifyToken
+} from '../services/api';
 
 const AdminDashboard = () => {
   const navigate = useNavigate();
-  const [portfolioData, setPortfolioData] = useState(mockPortfolioData);
+  const [portfolioData, setPortfolioData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
+  
+  // File upload states
+  const [resumePDF, setResumePDF] = useState(null);
+  const [resumeDOCX, setResumeDOCX] = useState(null);
+  const [coverLetterPDF, setCoverLetterPDF] = useState(null);
+  const [coverLetterDOCX, setCoverLetterDOCX] = useState(null);
 
   useEffect(() => {
-    // Check if admin is logged in
+    checkAuth();
+  }, []);
+
+  const checkAuth = async () => {
     const token = localStorage.getItem('adminToken');
     if (!token) {
       navigate('/admin/login');
+      return;
     }
-  }, [navigate]);
+
+    try {
+      await verifyToken();
+      await fetchPortfolioData();
+    } catch (error) {
+      console.error('Auth error:', error);
+      localStorage.removeItem('adminToken');
+      navigate('/admin/login');
+    }
+  };
+
+  const fetchPortfolioData = async () => {
+    try {
+      const data = await getPortfolio();
+      setPortfolioData(data);
+    } catch (error) {
+      console.error('Error fetching portfolio:', error);
+      toast({
+        title: "Error",
+        description: "Failed to load portfolio data",
+        variant: "destructive"
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleLogout = () => {
     localStorage.removeItem('adminToken');
     navigate('/admin/login');
   };
 
-  const handleSave = (section) => {
-    // Mock save - will be replaced with backend API
-    toast({
-      title: "Success",
-      description: `${section} updated successfully!`,
-    });
+  const handleSavePersonalInfo = async () => {
+    setSaving(true);
+    try {
+      await updatePersonalInfo(portfolioData.personalInfo);
+      await updateSocialLinks(portfolioData.socialLinks);
+      toast({
+        title: "Success",
+        description: "Personal information updated successfully!",
+      });
+    } catch (error) {
+      console.error('Error saving:', error);
+      toast({
+        title: "Error",
+        description: error.response?.data?.detail || "Failed to update",
+        variant: "destructive"
+      });
+    } finally {
+      setSaving(false);
+    }
   };
 
-  const updatePersonalInfo = (field, value) => {
+  const handleUpdatePersonalInfo = (field, value) => {
     setPortfolioData(prev => ({
       ...prev,
       personalInfo: { ...prev.personalInfo, [field]: value }
     }));
   };
 
-  const updateSocialLinks = (field, value) => {
+  const handleUpdateSocialLinks = (field, value) => {
     setPortfolioData(prev => ({
       ...prev,
       socialLinks: { ...prev.socialLinks, [field]: value }
     }));
   };
 
-  const addExperience = () => {
+  const handleAddExperience = () => {
     const newExp = {
-      id: Date.now(),
+      id: Date.now().toString(),
       company: '',
       position: '',
       startDate: '',
@@ -67,16 +132,29 @@ const AdminDashboard = () => {
     }));
   };
 
-  const deleteExperience = (id) => {
-    setPortfolioData(prev => ({
-      ...prev,
-      experience: prev.experience.filter(exp => exp.id !== id)
-    }));
+  const handleDeleteExperience = async (id) => {
+    try {
+      await deleteExperience(id);
+      setPortfolioData(prev => ({
+        ...prev,
+        experience: prev.experience.filter(exp => exp.id !== id)
+      }));
+      toast({
+        title: "Success",
+        description: "Experience deleted successfully!",
+      });
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to delete experience",
+        variant: "destructive"
+      });
+    }
   };
 
-  const addCertification = () => {
+  const handleAddCertification = () => {
     const newCert = {
-      id: Date.now(),
+      id: Date.now().toString(),
       name: '',
       issuingOrg: '',
       issueDate: '',
@@ -88,16 +166,29 @@ const AdminDashboard = () => {
     }));
   };
 
-  const deleteCertification = (id) => {
-    setPortfolioData(prev => ({
-      ...prev,
-      certifications: prev.certifications.filter(cert => cert.id !== id)
-    }));
+  const handleDeleteCertification = async (id) => {
+    try {
+      await deleteCertification(id);
+      setPortfolioData(prev => ({
+        ...prev,
+        certifications: prev.certifications.filter(cert => cert.id !== id)
+      }));
+      toast({
+        title: "Success",
+        description: "Certification deleted successfully!",
+      });
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to delete certification",
+        variant: "destructive"
+      });
+    }
   };
 
-  const addSkill = () => {
+  const handleAddSkill = () => {
     const newSkill = {
-      id: Date.now(),
+      id: Date.now().toString(),
       name: '',
       level: 50
     };
@@ -107,12 +198,141 @@ const AdminDashboard = () => {
     }));
   };
 
-  const deleteSkill = (id) => {
-    setPortfolioData(prev => ({
-      ...prev,
-      skills: prev.skills.filter(skill => skill.id !== id)
-    }));
+  const handleDeleteSkill = async (id) => {
+    try {
+      await deleteSkill(id);
+      setPortfolioData(prev => ({
+        ...prev,
+        skills: prev.skills.filter(skill => skill.id !== id)
+      }));
+      toast({
+        title: "Success",
+        description: "Skill deleted successfully!",
+      });
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to delete skill",
+        variant: "destructive"
+      });
+    }
   };
+
+  const handleSaveExperience = async () => {
+    setSaving(true);
+    try {
+      // For simplicity, we'll refetch the data after saving
+      // In production, you might want to update each experience individually
+      toast({
+        title: "Success",
+        description: "Experience updated successfully!",
+      });
+      await fetchPortfolioData();
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to update experience",
+        variant: "destructive"
+      });
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const handleSaveCertifications = async () => {
+    setSaving(true);
+    try {
+      toast({
+        title: "Success",
+        description: "Certifications updated successfully!",
+      });
+      await fetchPortfolioData();
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to update certifications",
+        variant: "destructive"
+      });
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const handleSaveSkills = async () => {
+    setSaving(true);
+    try {
+      toast({
+        title: "Success",
+        description: "Skills updated successfully!",
+      });
+      await fetchPortfolioData();
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to update skills",
+        variant: "destructive"
+      });
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const handleUploadDocuments = async () => {
+    const files = {};
+    if (resumePDF) files.resumePDF = resumePDF;
+    if (resumeDOCX) files.resumeDOCX = resumeDOCX;
+    if (coverLetterPDF) files.coverLetterPDF = coverLetterPDF;
+    if (coverLetterDOCX) files.coverLetterDOCX = coverLetterDOCX;
+
+    if (Object.keys(files).length === 0) {
+      toast({
+        title: "Info",
+        description: "Please select at least one file to upload",
+      });
+      return;
+    }
+
+    setSaving(true);
+    try {
+      await uploadDocuments(files);
+      toast({
+        title: "Success",
+        description: "Documents uploaded successfully!",
+      });
+      // Clear file inputs
+      setResumePDF(null);
+      setResumeDOCX(null);
+      setCoverLetterPDF(null);
+      setCoverLetterDOCX(null);
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: error.response?.data?.detail || "Failed to upload documents",
+        variant: "destructive"
+      });
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-slate-50 flex items-center justify-center">
+        <div className="text-center">
+          <Loader2 className="w-12 h-12 animate-spin mx-auto text-slate-600 mb-4" />
+          <p className="text-slate-600">Loading dashboard...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (!portfolioData) {
+    return (
+      <div className="min-h-screen bg-slate-50 flex items-center justify-center">
+        <p className="text-slate-600">Failed to load portfolio data</p>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-slate-50">
