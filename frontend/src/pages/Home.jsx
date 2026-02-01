@@ -83,7 +83,7 @@ const Home = () => {
           <Button 
             variant="outline" 
             className="bg-white/90 hover:bg-white"
-            onClick={() => window.location.href = '/admin/login'}
+            onClick={() => window.location.href = '/frontend/src/pages/adminlogin.jsx'}
           >
             <Lock className="w-4 h-4 mr-2" />
             Admin Login
