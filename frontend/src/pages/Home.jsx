@@ -85,7 +85,7 @@ const Home = () => {
           <Button 
             variant="outline" 
             className="bg-white/90 hover:bg-white"
-            onClick={() =>  = navigate('/admin/login')}
+            onClick={() => navigate('/admin/Login')}
           >
             <Lock className="w-4 h-4 mr-2" />
             Admin Login
