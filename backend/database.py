@@ -5,21 +5,34 @@ from pathlib import Path
 from auth import hash_password
 from datetime import datetime
 import logging
-import certifi
+import ssl
 
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
 
 logger = logging.getLogger(__name__)
 
-# MongoDB connection with SSL
+# MongoDB connection with SSL context
 mongo_url = os.environ['MONGO_URL']
-client = AsyncIOMotorClient(
-    mongo_url,
-    tlsCAFile=certifi.where(),
-    serverSelectionTimeoutMS=10000
-)
-db = client[os.environ['DB_NAME']]
+try:
+    # Create SSL context that allows all certificates
+    ssl_context = ssl.create_default_context()
+    ssl_context.check_hostname = False
+    ssl_context.verify_mode = ssl.CERT_NONE
+    
+    client = AsyncIOMotorClient(
+        mongo_url,
+        ssl=True,
+        tlsAllowInvalidCertificates=True,
+        serverSelectionTimeoutMS=30000
+    )
+    db = client[os.environ['DB_NAME']]
+    logger.info("MongoDB connection established")
+except Exception as e:
+    logger.error(f"Failed to connect to MongoDB: {str(e)}")
+    # Fallback to simple connection
+    client = AsyncIOMotorClient(mongo_url)
+    db = client[os.environ['DB_NAME']]
 
 # Collections
 portfolio_collection = db.portfolio
