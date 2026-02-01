@@ -646,7 +646,7 @@ const AdminDashboard = () => {
                   <Card key={skill.id} className="p-4">
                     <div className="flex justify-between items-start mb-4">
                       <h4 className="font-semibold">Skill #{index + 1}</h4>
-                      <Button variant="destructive" size="sm" onClick={() => deleteSkill(skill.id)}>
+                      <Button variant="destructive" size="sm" onClick={() => handleDeleteSkill(skill.id)}>
                         <Trash2 className="w-4 h-4" />
                       </Button>
                     </div>
