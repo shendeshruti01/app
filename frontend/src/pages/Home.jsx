@@ -77,6 +77,20 @@ const Home = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white">
+      {/* Header with Admin Login */}
+      <div className="absolute top-0 left-0 right-0 z-10 bg-transparent">
+        <div className="max-w-6xl mx-auto px-4 py-4 flex justify-end">
+          <Button 
+            variant="outline" 
+            className="bg-white/90 hover:bg-white"
+            onClick={() => window.location.href = '/admin/login'}
+          >
+            <Lock className="w-4 h-4 mr-2" />
+            Admin Login
+          </Button>
+        </div>
+      </div>
+
       {/* Cover Photo Section */}
       <div className="relative h-96 w-full overflow-hidden">
         <img 
