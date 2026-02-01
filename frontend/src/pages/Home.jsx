@@ -256,22 +256,38 @@ const Home = () => {
               <div className="grid md:grid-cols-2 gap-4">
                 <div className="space-y-3">
                   <h3 className="font-semibold text-slate-900 mb-3">Resume</h3>
-                  <Button className="w-full" variant="outline">
+                  <Button 
+                    className="w-full" 
+                    variant="outline"
+                    onClick={() => handleDownload('resume-pdf', 'resume.pdf')}
+                  >
                     <Download className="w-4 h-4 mr-2" />
                     Download PDF
                   </Button>
-                  <Button className="w-full" variant="outline">
+                  <Button 
+                    className="w-full" 
+                    variant="outline"
+                    onClick={() => handleDownload('resume-docx', 'resume.docx')}
+                  >
                     <Download className="w-4 h-4 mr-2" />
                     Download DOCX
                   </Button>
                 </div>
                 <div className="space-y-3">
                   <h3 className="font-semibold text-slate-900 mb-3">Cover Letter</h3>
-                  <Button className="w-full" variant="outline">
+                  <Button 
+                    className="w-full" 
+                    variant="outline"
+                    onClick={() => handleDownload('cover-letter-pdf', 'cover-letter.pdf')}
+                  >
                     <Download className="w-4 h-4 mr-2" />
                     Download PDF
                   </Button>
-                  <Button className="w-full" variant="outline">
+                  <Button 
+                    className="w-full" 
+                    variant="outline"
+                    onClick={() => handleDownload('cover-letter-docx', 'cover-letter.docx')}
+                  >
                     <Download className="w-4 h-4 mr-2" />
                     Download DOCX
                   </Button>
