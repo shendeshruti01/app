@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Download, Mail, Phone, MapPin, Linkedin, Instagram, Facebook, Twitter, Award, Briefcase, Code, Loader2, Lock } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
@@ -8,6 +9,7 @@ import { getPortfolio, downloadDocument } from '../services/api';
 import { toast } from '@/hooks/use-toast';
 
 const Home = () => {
+  const navigate = useNavigate();
   const [portfolioData, setPortfolioData] = useState(null);
   const [loading, setLoading] = useState(true);
   
@@ -83,7 +85,7 @@ const Home = () => {
           <Button 
             variant="outline" 
             className="bg-white/90 hover:bg-white"
-            onClick={() => window.location.href = '/frontend/src/pages/adminlogin.jsx'}
+            onClick={() =>  = navigate('/admin/login')}
           >
             <Lock className="w-4 h-4 mr-2" />
             Admin Login
