@@ -656,9 +656,18 @@ const AdminDashboard = () => {
                     </div>
                   </Card>
                 ))}
-                <Button onClick={() => handleSave('Skills')} className="w-full">
-                  <Save className="w-4 h-4 mr-2" />
-                  Save All Changes
+                <Button onClick={handleSaveSkills} className="w-full" disabled={saving}>
+                  {saving ? (
+                    <>
+                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                      Saving...
+                    </>
+                  ) : (
+                    <>
+                      <Save className="w-4 h-4 mr-2" />
+                      Save All Changes
+                    </>
+                  )}
                 </Button>
               </CardContent>
             </Card>
