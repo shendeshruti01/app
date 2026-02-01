@@ -528,7 +528,7 @@ const AdminDashboard = () => {
                     </CardTitle>
                     <CardDescription>Manage your professional experience</CardDescription>
                   </div>
-                  <Button onClick={addExperience}>
+                  <Button onClick={handleAddExperience}>
                     <Plus className="w-4 h-4 mr-2" />
                     Add Experience
                   </Button>
