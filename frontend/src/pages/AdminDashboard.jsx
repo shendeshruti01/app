@@ -380,7 +380,7 @@ const AdminDashboard = () => {
                     <Input
                       id="name"
                       value={portfolioData.personalInfo.name}
-                      onChange={(e) => updatePersonalInfo('name', e.target.value)}
+                      onChange={(e) => handleUpdatePersonalInfo('name', e.target.value)}
                     />
                   </div>
                   <div className="space-y-2">
@@ -388,7 +388,7 @@ const AdminDashboard = () => {
                     <Input
                       id="jobTitle"
                       value={portfolioData.personalInfo.jobTitle}
-                      onChange={(e) => updatePersonalInfo('jobTitle', e.target.value)}
+                      onChange={(e) => handleUpdatePersonalInfo('jobTitle', e.target.value)}
                     />
                   </div>
                 </div>
@@ -399,7 +399,7 @@ const AdminDashboard = () => {
                     id="aboutMe"
                     rows={5}
                     value={portfolioData.personalInfo.aboutMe}
-                    onChange={(e) => updatePersonalInfo('aboutMe', e.target.value)}
+                    onChange={(e) => handleUpdatePersonalInfo('aboutMe', e.target.value)}
                   />
                 </div>
 
@@ -412,7 +412,7 @@ const AdminDashboard = () => {
                       id="email"
                       type="email"
                       value={portfolioData.personalInfo.email}
-                      onChange={(e) => updatePersonalInfo('email', e.target.value)}
+                      onChange={(e) => handleUpdatePersonalInfo('email', e.target.value)}
                     />
                   </div>
                   <div className="space-y-2">
@@ -420,7 +420,7 @@ const AdminDashboard = () => {
                     <Input
                       id="phone"
                       value={portfolioData.personalInfo.phone}
-                      onChange={(e) => updatePersonalInfo('phone', e.target.value)}
+                      onChange={(e) => handleUpdatePersonalInfo('phone', e.target.value)}
                     />
                   </div>
                   <div className="space-y-2">
@@ -428,7 +428,7 @@ const AdminDashboard = () => {
                     <Input
                       id="location"
                       value={portfolioData.personalInfo.location}
-                      onChange={(e) => updatePersonalInfo('location', e.target.value)}
+                      onChange={(e) => handleUpdatePersonalInfo('location', e.target.value)}
                     />
                   </div>
                 </div>
@@ -445,7 +445,7 @@ const AdminDashboard = () => {
                       <Label>Profile Picture URL</Label>
                       <Input
                         value={portfolioData.personalInfo.profilePicture}
-                        onChange={(e) => updatePersonalInfo('profilePicture', e.target.value)}
+                        onChange={(e) => handleUpdatePersonalInfo('profilePicture', e.target.value)}
                         placeholder="Enter image URL"
                       />
                     </div>
@@ -453,7 +453,7 @@ const AdminDashboard = () => {
                       <Label>Cover Photo URL</Label>
                       <Input
                         value={portfolioData.personalInfo.coverPhoto}
-                        onChange={(e) => updatePersonalInfo('coverPhoto', e.target.value)}
+                        onChange={(e) => handleUpdatePersonalInfo('coverPhoto', e.target.value)}
                         placeholder="Enter image URL"
                       />
                     </div>
@@ -472,36 +472,45 @@ const AdminDashboard = () => {
                       <Label>LinkedIn URL</Label>
                       <Input
                         value={portfolioData.socialLinks.linkedin}
-                        onChange={(e) => updateSocialLinks('linkedin', e.target.value)}
+                        onChange={(e) => handleUpdateSocialLinks('linkedin', e.target.value)}
                       />
                     </div>
                     <div className="space-y-2">
                       <Label>Instagram URL</Label>
                       <Input
                         value={portfolioData.socialLinks.instagram}
-                        onChange={(e) => updateSocialLinks('instagram', e.target.value)}
+                        onChange={(e) => handleUpdateSocialLinks('instagram', e.target.value)}
                       />
                     </div>
                     <div className="space-y-2">
                       <Label>Facebook URL</Label>
                       <Input
                         value={portfolioData.socialLinks.facebook}
-                        onChange={(e) => updateSocialLinks('facebook', e.target.value)}
+                        onChange={(e) => handleUpdateSocialLinks('facebook', e.target.value)}
                       />
                     </div>
                     <div className="space-y-2">
                       <Label>Twitter URL</Label>
                       <Input
                         value={portfolioData.socialLinks.twitter}
-                        onChange={(e) => updateSocialLinks('twitter', e.target.value)}
+                        onChange={(e) => handleUpdateSocialLinks('twitter', e.target.value)}
                       />
                     </div>
                   </div>
                 </div>
 
-                <Button onClick={() => handleSave('Personal Information')} className="w-full">
-                  <Save className="w-4 h-4 mr-2" />
-                  Save Changes
+                <Button onClick={handleSavePersonalInfo} className="w-full" disabled={saving}>
+                  {saving ? (
+                    <>
+                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                      Saving...
+                    </>
+                  ) : (
+                    <>
+                      <Save className="w-4 h-4 mr-2" />
+                      Save Changes
+                    </>
+                  )}
                 </Button>
               </CardContent>
             </Card>
