@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { LogOut, Save, Plus, Trash2 } from 'lucide-react';
+import { LogOut, Save, Plus, Trash2, User, Briefcase, Award, Code, Link as LinkIcon, FileText, Image } from 'lucide-react';
 import { mockPortfolioData } from '../mock';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
