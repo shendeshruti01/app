@@ -552,9 +552,18 @@ const AdminDashboard = () => {
                     <Textarea className="mt-4" rows={3} placeholder="Description" defaultValue={exp.description} />
                   </Card>
                 ))}
-                <Button onClick={() => handleSave('Experience')} className="w-full">
-                  <Save className="w-4 h-4 mr-2" />
-                  Save All Changes
+                <Button onClick={handleSaveExperience} className="w-full" disabled={saving}>
+                  {saving ? (
+                    <>
+                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                      Saving...
+                    </>
+                  ) : (
+                    <>
+                      <Save className="w-4 h-4 mr-2" />
+                      Save All Changes
+                    </>
+                  )}
                 </Button>
               </CardContent>
             </Card>
