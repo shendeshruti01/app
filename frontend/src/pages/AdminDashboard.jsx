@@ -635,7 +635,7 @@ const AdminDashboard = () => {
                     </CardTitle>
                     <CardDescription>Manage your skills and expertise levels</CardDescription>
                   </div>
-                  <Button onClick={addSkill}>
+                  <Button onClick={handleAddSkill}>
                     <Plus className="w-4 h-4 mr-2" />
                     Add Skill
                   </Button>
