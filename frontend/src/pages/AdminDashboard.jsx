@@ -581,7 +581,7 @@ const AdminDashboard = () => {
                     </CardTitle>
                     <CardDescription>Manage your certifications</CardDescription>
                   </div>
-                  <Button onClick={addCertification}>
+                  <Button onClick={handleAddCertification}>
                     <Plus className="w-4 h-4 mr-2" />
                     Add Certification
                   </Button>
