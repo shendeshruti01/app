@@ -539,7 +539,7 @@ const AdminDashboard = () => {
                   <Card key={exp.id} className="p-4">
                     <div className="flex justify-between items-start mb-4">
                       <h4 className="font-semibold">Experience #{index + 1}</h4>
-                      <Button variant="destructive" size="sm" onClick={() => deleteExperience(exp.id)}>
+                      <Button variant="destructive" size="sm" onClick={() => handleDeleteExperience(exp.id)}>
                         <Trash2 className="w-4 h-4" />
                       </Button>
                     </div>
