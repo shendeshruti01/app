@@ -592,7 +592,7 @@ const AdminDashboard = () => {
                   <Card key={cert.id} className="p-4">
                     <div className="flex justify-between items-start mb-4">
                       <h4 className="font-semibold">Certification #{index + 1}</h4>
-                      <Button variant="destructive" size="sm" onClick={() => deleteCertification(cert.id)}>
+                      <Button variant="destructive" size="sm" onClick={() => handleDeleteCertification(cert.id)}>
                         <Trash2 className="w-4 h-4" />
                       </Button>
                     </div>
