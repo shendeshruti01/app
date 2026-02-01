@@ -1,13 +1,79 @@
-import React from 'react';
-import { Download, Mail, Phone, MapPin, Linkedin, Instagram, Facebook, Twitter, Award, Briefcase, Code } from 'lucide-react';
-import { mockPortfolioData } from '../mock';
+import React, { useState, useEffect } from 'react';
+import { Download, Mail, Phone, MapPin, Linkedin, Instagram, Facebook, Twitter, Award, Briefcase, Code, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
+import { getPortfolio, downloadDocument } from '../services/api';
+import { toast } from '@/hooks/use-toast';
 
 const Home = () => {
-  const { personalInfo, experience, certifications, skills, socialLinks, documents } = mockPortfolioData;
+  const [portfolioData, setPortfolioData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  
+  useEffect(() => {
+    fetchPortfolioData();
+  }, []);
+  
+  const fetchPortfolioData = async () => {
+    try {
+      const data = await getPortfolio();
+      setPortfolioData(data);
+    } catch (error) {
+      console.error('Error fetching portfolio:', error);
+      toast({
+        title: "Error",
+        description: "Failed to load portfolio data",
+        variant: "destructive"
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+  
+  const handleDownload = async (docType, filename) => {
+    try {
+      const blob = await downloadDocument(docType);
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = filename;
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error('Error downloading document:', error);
+      toast({
+        title: "Error",
+        description: "Failed to download document",
+        variant: "destructive"
+      });
+    }
+  };
+  
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white flex items-center justify-center">
+        <div className="text-center">
+          <Loader2 className="w-12 h-12 animate-spin mx-auto text-slate-600 mb-4" />
+          <p className="text-slate-600">Loading portfolio...</p>
+        </div>
+      </div>
+    );
+  }
+  
+  if (!portfolioData) {
+    return (
+      <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white flex items-center justify-center">
+        <div className="text-center">
+          <p className="text-slate-600">Failed to load portfolio data</p>
+        </div>
+      </div>
+    );
+  }
+  
+  const { personalInfo, experience, certifications, skills, socialLinks } = portfolioData;
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white">
