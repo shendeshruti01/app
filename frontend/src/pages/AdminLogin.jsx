@@ -6,6 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Alert, AlertDescription } from '@/components/ui/alert';
+import { login } from '../services/api';
 
 const AdminLogin = () => {
   const [username, setUsername] = useState('');
@@ -19,16 +20,15 @@ const AdminLogin = () => {
     setError('');
     setLoading(true);
 
-    // Mock login - will be replaced with backend integration
-    setTimeout(() => {
-      if (username === 'admin' && password === 'admin123') {
-        localStorage.setItem('adminToken', 'mock-token-12345');
-        navigate('/admin/dashboard');
-      } else {
-        setError('Invalid username or password');
-      }
+    try {
+      const response = await login(username, password);
+      localStorage.setItem('adminToken', response.token);
+      navigate('/admin/dashboard');
+    } catch (err) {
+      setError(err.response?.data?.detail || 'Invalid username or password');
+    } finally {
       setLoading(false);
-    }, 1000);
+    }
   };
 
   return (
