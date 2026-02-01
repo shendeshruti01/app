@@ -690,11 +690,21 @@ const AdminDashboard = () => {
                     <div className="space-y-3">
                       <div>
                         <Label>Upload PDF</Label>
-                        <Input type="file" accept=".pdf" className="mt-2" />
+                        <Input 
+                          type="file" 
+                          accept=".pdf" 
+                          className="mt-2"
+                          onChange={(e) => setResumePDF(e.target.files[0])}
+                        />
                       </div>
                       <div>
                         <Label>Upload DOCX</Label>
-                        <Input type="file" accept=".docx" className="mt-2" />
+                        <Input 
+                          type="file" 
+                          accept=".docx" 
+                          className="mt-2"
+                          onChange={(e) => setResumeDOCX(e.target.files[0])}
+                        />
                       </div>
                     </div>
                   </div>
@@ -703,18 +713,37 @@ const AdminDashboard = () => {
                     <div className="space-y-3">
                       <div>
                         <Label>Upload PDF</Label>
-                        <Input type="file" accept=".pdf" className="mt-2" />
+                        <Input 
+                          type="file" 
+                          accept=".pdf" 
+                          className="mt-2"
+                          onChange={(e) => setCoverLetterPDF(e.target.files[0])}
+                        />
                       </div>
                       <div>
                         <Label>Upload DOCX</Label>
-                        <Input type="file" accept=".docx" className="mt-2" />
+                        <Input 
+                          type="file" 
+                          accept=".docx" 
+                          className="mt-2"
+                          onChange={(e) => setCoverLetterDOCX(e.target.files[0])}
+                        />
                       </div>
                     </div>
                   </div>
                 </div>
-                <Button onClick={() => handleSave('Documents')} className="w-full">
-                  <Upload className="w-4 h-4 mr-2" />
-                  Upload Documents
+                <Button onClick={handleUploadDocuments} className="w-full" disabled={saving}>
+                  {saving ? (
+                    <>
+                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                      Uploading...
+                    </>
+                  ) : (
+                    <>
+                      <Upload className="w-4 h-4 mr-2" />
+                      Upload Documents
+                    </>
+                  )}
                 </Button>
               </CardContent>
             </Card>
