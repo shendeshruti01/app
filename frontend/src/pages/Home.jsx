@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Download, Mail, Phone, MapPin, Linkedin, Instagram, Facebook, Twitter, Award, Briefcase, Code, Loader2 } from 'lucide-react';
+import { Download, Mail, Phone, MapPin, Linkedin, Instagram, Facebook, Twitter, Award, Briefcase, Code, Loader2, Lock } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
