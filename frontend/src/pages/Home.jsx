@@ -1,11 +1,10 @@
 import React from 'react';
-import { Download, Mail, Phone, MapPin, Linkedin, Instagram, Facebook, Twitter, ExternalLink, Award, Briefcase, Code } from 'lucide-react';
+import { Download, Mail, Phone, MapPin, Linkedin, Instagram, Facebook, Twitter, Award, Briefcase, Code } from 'lucide-react';
 import { mockPortfolioData } from '../mock';
-import { Button } from '../components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../components/ui/card';
-import { Badge } from '../components/ui/badge';
-import { Separator } from '../components/ui/separator';
-import { Progress } from '../components/ui/progress';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Progress } from '@/components/ui/progress';
 
 const Home = () => {
   const { personalInfo, experience, certifications, skills, socialLinks, documents } = mockPortfolioData;
